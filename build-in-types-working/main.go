@@ -121,6 +121,38 @@ func main() {
 
 	DeleteFromSlice(animals, 1)
 	fmt.Println(animals)
+
+	// 3-3. maps
+	intMap := make(map[string]int)
+	intMap["one"] = 1
+	intMap["two"] = 2
+	intMap["three"] = 3
+	intMap["four"] = 4
+	intMap["five"] = 5
+
+	// map is never sorted in golang
+	for key, value := range intMap {
+		fmt.Println(key, value)
+	}
+
+	// delete a element from map
+	fmt.Println("delete a element from map")
+	delete(intMap, "four")
+	for key, value := range intMap {
+		fmt.Println(key, value)
+	}
+
+	// find if an element is in a map
+	el, ok := intMap["four"]
+	if ok {
+		fmt.Println(el, "is in map")
+	} else {
+		// if cannot find it, it fallback to default value of el type, here it's int, so it's 0
+		fmt.Println(el, "is not in map")
+	}
+
+	// change an element in map
+	intMap["two"] = 4
 }
 
 // 3. reference types (pointers, slices, maps, functions, channels)
