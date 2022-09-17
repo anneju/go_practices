@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"sort"
 )
 
 // 1. basic types (numbers, strings, booleans)
@@ -79,6 +80,7 @@ func main() {
 	fmt.Println(" ")
 
 	// 3. reference types (pointers, slices, maps, functions, channels)
+	// 3-1. pointers
 	x := 10
 
 	// use `&` to get memory address that store the value of x
@@ -94,10 +96,46 @@ func main() {
 
 	changeValueOfPointer(&x)
 	fmt.Println("After function call, x is now", x)
+
+	// 3-2. slices
+	var animals []string
+	animals = append(animals, "dog")
+	animals = append(animals, "cat")
+	animals = append(animals, "fish")
+	animals = append(animals, "horse")
+	fmt.Println(animals)
+
+	// another way to loop the slice
+	for index, animal := range animals {
+		fmt.Println(index, " ", animal)
+	}
+
+	fmt.Println("First two elements are", animals[0:2])
+
+	fmt.Println("The slice is", len(animals), "elements long")
+
+	fmt.Println("Is it sorted?", sort.StringsAreSorted(animals))
+
+	sort.Strings(animals)
+	fmt.Println("Is it sorted now?", sort.StringsAreSorted(animals))
+
+	DeleteFromSlice(animals, 1)
+	fmt.Println(animals)
 }
 
 // 3. reference types (pointers, slices, maps, functions, channels)
 func changeValueOfPointer(num *int) {
 	// *int means pointer
 	*num = 25
+}
+
+// delete element from slice for a given index
+func DeleteFromSlice(a []string, i int) []string {
+	// copy the last element from slice to this index
+	a[i] = a[len(a)-1]
+	// replace the last element of slice with nothing
+	a[len(a)-1] = ""
+	// truncate the slice, here we return every things in that slice except the last element
+	a = a[:len(a)-1]
+	return a
 }
