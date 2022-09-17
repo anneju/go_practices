@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"sort"
+
+	"github.com/eiannone/keyboard"
 )
 
 // 1. basic types (numbers, strings, booleans)
@@ -47,6 +49,10 @@ func (a *Animal) HowManyLegs() {
 	fmt.Printf("A %s has %d legs", a.Name, a.NumberOfLegs)
 	fmt.Println()
 }
+
+// channel
+// can only pass one type to channel
+var keyPressChan chan rune
 
 // 4. interface type
 
@@ -193,6 +199,28 @@ func main() {
 	}
 	cat.Says()
 	cat.HowManyLegs()
+
+	// 3-5. channels
+	keyPressChan = make(chan rune)
+
+	go listenForKeyPress()
+
+	fmt.Println("Press any key, or q to quit.")
+
+	_ = keyboard.Open()
+	defer func() {
+		keyboard.Close()
+	}()
+
+	for {
+		char, _, _ := keyboard.GetSingleKey()
+		if char == 'q' || char == 'Q' {
+			break
+		}
+
+		// send char to channel
+		keyPressChan <- char
+	}
 }
 
 // 3. reference types (pointers, slices, maps, functions, channels)
@@ -230,4 +258,13 @@ func sumMany(nums ...int) int {
 		total = total + x
 	}
 	return total
+}
+
+// channels
+
+func listenForKeyPress() {
+	for {
+		key := <-keyPressChan // key is whatever passed into keyPressChan
+		fmt.Println("You pressed", string(key))
+	}
 }
