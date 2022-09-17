@@ -31,6 +31,22 @@ type Car struct {
 }
 
 // 3. reference types (pointers, slices, maps, functions, channels)
+type Animal struct {
+	Name         string
+	Sound        string
+	NumberOfLegs int
+}
+
+// (a *Animal) is called receiver, *Animal means pointer to Animal. This comes right before the function name
+func (a *Animal) Says() {
+	fmt.Printf("A %s says %s", a.Name, a.Sound)
+	fmt.Println()
+}
+
+func (a *Animal) HowManyLegs() {
+	fmt.Printf("A %s has %d legs", a.Name, a.NumberOfLegs)
+	fmt.Println()
+}
 
 // 4. interface type
 
@@ -153,6 +169,30 @@ func main() {
 
 	// change an element in map
 	intMap["two"] = 4
+
+	// 3-4. functions
+	z := addTwoNumbers(2, 4)
+	fmt.Println(z)
+
+	z_2 := add2Numbers(3, 4)
+	fmt.Println(z_2)
+
+	myTotal := sumMany(2, 3, 4, 5, 88, -7)
+	fmt.Println(myTotal)
+
+	var dog Animal
+	dog.Name = "dog"
+	dog.Sound = "woof"
+	dog.NumberOfLegs = 4
+	dog.Says()
+
+	cat := Animal{
+		Name:         "cat",
+		Sound:        "meow",
+		NumberOfLegs: 4,
+	}
+	cat.Says()
+	cat.HowManyLegs()
 }
 
 // 3. reference types (pointers, slices, maps, functions, channels)
@@ -170,4 +210,24 @@ func DeleteFromSlice(a []string, i int) []string {
 	// truncate the slice, here we return every things in that slice except the last element
 	a = a[:len(a)-1]
 	return a
+}
+
+// function
+func addTwoNumbers(x, y int) int {
+	return x + y
+}
+
+// naked return function, but rarely used.
+func add2Numbers(x, y int) (sum int) {
+	sum = x + y
+	return
+}
+
+// variadic function
+func sumMany(nums ...int) int {
+	total := 0
+	for _, x := range nums {
+		total = total + x
+	}
+	return total
 }
